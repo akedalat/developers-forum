@@ -1,5 +1,5 @@
 # README
-A forum for developers where users can create posts under pre-defined categories and can communicate with other users through comments. 
+A forum for Flatiron School students where users can create posts under pre-defined categories and can communicate with other users through comments. 
 
 
 This README would normally document whatever steps are necessary to get the

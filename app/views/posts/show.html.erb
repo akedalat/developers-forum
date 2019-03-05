@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
 
+<h1>Posts</h1><br>
+
 <p>
   <strong>Title:</strong>
   <%= @post.title %>
@@ -11,14 +13,15 @@
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @post.user_id %>
+  <strong>By:</strong>
+  <%= @post.user.full_name %>
 </p>
 
 <p>
-  <strong>Category:</strong>
-  <%= @post.category_id %>
+  Written for <strong><%= @post.category.name %></strong> Category
+
 </p>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %> |
+<%= link_to 'Edit', edit_post_path(@post) %> <br>
 <%= link_to 'Back', posts_path %>
