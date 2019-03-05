@@ -1,4 +1,6 @@
 # README
+A forum for developers where users can create posts under pre-defined categories and can communicate with other users through comments. 
+
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
