@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_action :authorized
+  skip_before_action :authorized, only: [:index, :show]
   #before_action :admin_authorized, only: [:new, :create, :edit, :update, :destroy]
   #before_action :set_comment, only: [:show, :edit, :update, :destroy]
 

@@ -13,12 +13,13 @@
 </p>
 
 <p>
+  Published <%=time_ago_in_words(@post.created_at)%> ago<br>
   <strong>By:</strong>
   <%= @post.user.full_name %>
 </p>
 
 <p>
-  Written for <strong><%= @post.category.name %></strong> Category
+  Written for <strong><%= link_to @post.category.name, @post.category %></strong> Category
 
 </p>
 

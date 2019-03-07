@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :authorized
+  skip_before_action :authorized, only: [:new, :create]
 
   def new
   end
@@ -7,6 +9,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
+    
       redirect_to user_path(@user)
     else
       flash.now[:danger] = 'Invalid email/password combination'
@@ -16,7 +19,6 @@ class SessionsController < ApplicationController
 
   def destroy
     session.delete(:user_id)
-    @current_user = nil
     redirect_to "/"
   end
 

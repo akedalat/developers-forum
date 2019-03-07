@@ -1,10 +1,6 @@
 class ApplicationController < ActionController::Base
-  before_action :authorized
-  skip_before_action :authorized, only: [:index, :new, :created]
 
-  #before_action :admin_authorized, only: [:edit, :destroy]
-
-helper_method :logged_in?, :current_user, :authorized, :admin, :admin_authorized
+  helper_method :logged_in?, :current_user, :authorized, :admin, :admin_authorized
 
   def current_user
     if @current_user.nil?
@@ -15,14 +11,15 @@ helper_method :logged_in?, :current_user, :authorized, :admin, :admin_authorized
   end
 
   def admin
-    @admin = current_user
-    if @admin.email ==  "akedalat@gmail.com"
-      return @admin
+    if current_user.email ==  "akedalat@gmail.com"
+      return true
+    else
+      return false
     end
   end
 
   def admin_authorized
-    !!admin
+    return head(:forbidden) unless admin
   end
 
   def logged_in?

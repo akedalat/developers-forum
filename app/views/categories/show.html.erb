@@ -6,11 +6,11 @@
 </p>
 
 <ul>
-<%=@category.posts.each do |post|%>
-<li><%=post.title%></li>
+<%@category.posts.each do |post|%>
+<li><%=link_to post.title, post%></li>
 <%end%>
 </ul>
-<%if admin_authorized%>
+<%if admin%>
 <%=link_to 'Edit', edit_category_path(@category) %> |
 <%end%>
 
