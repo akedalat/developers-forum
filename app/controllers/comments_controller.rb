@@ -24,6 +24,9 @@ class CommentsController < ApplicationController
   # GET /comments/1/edit
   def edit
     @comment = Comment.find(params[:id])
+    if @comment.user != current_user
+      return head(:forbidden)
+    end
   end
 
   # POST /comments
@@ -61,6 +64,9 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     @comment = Comment.find(params[:id])
+    if @comment.user != current_user
+      return head(:forbidden)
+    end
     @comment.destroy
     respond_to do |format|
       format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }

@@ -22,7 +22,8 @@
   Written for <strong><%= link_to @post.category.name, @post.category %></strong> Category
 
 </p>
-
+<%if @post.user == current_user%>
 <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Edit', edit_post_path(@post) %> <br>
+<%end%>
 <%= link_to 'Back', posts_path %>

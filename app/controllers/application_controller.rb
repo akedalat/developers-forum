@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 
-  helper_method :logged_in?, :current_user, :authorized, :admin, :admin_authorized
+  helper_method :logged_in?, :current_user, :authorized, :admin, :admin_authorized, :current_user_authorized
 
   def current_user
     if @current_user.nil?
@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
 
   def admin_authorized
     return head(:forbidden) unless admin
+  end
+
+  def current_user_authorized
+    return head(:forbidden) unless current_user
   end
 
   def logged_in?
