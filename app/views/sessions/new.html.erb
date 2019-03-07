@@ -1,0 +1,16 @@
+<h1>Log in</h1>
+
+<% if flash[:danger] %>
+    <div class="alert"><%= flash[:danger] %></div>
+  <% end %>
+
+<%= form_tag("/login", method: "post") do %>
+  <%= label_tag(:q, "Email") %>
+  <%= text_field_tag(:email) %>
+
+  <%= label_tag(:q, "Password") %>
+  <%= text_field_tag(:password) %>
+  <%= submit_tag("Login") %>
+<% end %>
+
+    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
