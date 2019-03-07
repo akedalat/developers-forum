@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  #before_action :admin_authorized, only: [:index]
+  #before_action :set_user, only: [:show, :edit, :update, :destroy]
+
 
   # GET /users
   # GET /users.json
@@ -10,6 +12,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @user = User.find(params[:id])
   end
 
   # GET /users/new
@@ -19,15 +22,18 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
+      redirect_to "/users/#{session[:user_id]}/edit"
   end
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
+        session[:user_id] = nil
+        session[:user_id] = @user.id
         format.html { redirect_to @user, notice: 'Your account was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -40,13 +46,14 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
+    @user = User.find(params[:id])
+      respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'Your account was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.html { redirect_to @user, notice: 'Your account was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,6 +61,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    @user = User.find(params[:id])
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
