@@ -23,7 +23,8 @@ class CommentsController < ApplicationController
 
   # GET /comments/1/edit
   def edit
-    @comment = Comment.find(params[:id])
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
     if @comment.user != current_user
       return head(:forbidden)
     end
@@ -32,46 +33,43 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.create(params[:comment].permit(:comment))
+    @comment.content = params[:comment][:content]
+    @comment.user_id = current_user.id if current_user
+    if @comment.content.empty?
+      respond_to do |format|
+        format.html { redirect_to post_path(@post), notice: 'Reply NOT created. Content cannot be empty!' }
+        format.json { head :no_content }
       end
-    end
+
+      else
+        @comment.save
+      redirect_to post_path(@post)
+      end
   end
 
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
-    @comment = Comment.find(params[:id])
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+    @comment.update(params[:comment].permit(:comment))
+    @comment.content = params[:comment][:content]
+    if @comment.save
+      redirect_to post_path(@post)
+    else
+      render 'edit'
     end
   end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    @comment = Comment.find(params[:id])
-    if @comment.user != current_user
-      return head(:forbidden)
-    end
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
     @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to post_path(@post)
   end
 
   private

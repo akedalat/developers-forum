@@ -1,6 +1,9 @@
-<h1>Editing Comment</h1>
+<h1>Editing Reply</h1>
 
-<%= render 'form', comment: @comment %>
+<%= form_for ([@post, @comment]) do |f| %>
+  <%=f.label :content%>
+  <%=f.text_area :content%><br>
+  <%=f.submit%><br>
+<% end %>
 
-<%= link_to 'Show', @comment %> |
-<%= link_to 'Back', comments_path %>
+<%= link_to 'Cancel', @post %>

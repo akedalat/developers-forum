@@ -1,14 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Posts</h1><br>
+  <h2><strong><%= @post.title %></strong></h2>
 
 <p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
-
-<p>
-  <strong>Content:</strong>
   <%= @post.content %>
 </p>
 
@@ -17,11 +11,28 @@
   <strong>By:</strong>
   <%= @post.user.full_name %>
 </p>
-
 <p>
   Written for <strong><%= link_to @post.category.name, @post.category %></strong> Category
-
 </p>
+<ul>
+<%@post.comments.each do |comment|%>
+<li><%=comment.content%></li><br><br>
+<p>
+  Published <%=time_ago_in_words(comment.created_at)%> ago<br>
+  <strong>By:</strong>
+  <%= comment.user.full_name %>
+  <%if comment.user == current_user%>
+  <%= link_to 'Delete', [@post, comment], method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to "Edit", edit_post_comment_path(@post, comment) %> <br>
+  <%end%>
+</p>
+<%end%>
+</ul>
+<br>
+<h3>Reply to thread</h3>
+
+<%=render "comments/form"%>
+
 <%if @post.user == current_user%>
 <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Edit', edit_post_path(@post) %> <br>
