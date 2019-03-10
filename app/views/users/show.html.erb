@@ -10,6 +10,13 @@
   <%= @user.last_name %>
 </p>
 
-<%= link_to 'Posts', post_path(@user) %><br><br>
+<%= link_to 'Create Posts', posts_path %><br><br>
+<ul>
+<%if !@user.posts.nil?%>
+<% @user.posts.each do |post|%> <br>
+<li><%=link_to post.title, post%></li>
+  <%end%>
+<%end%>
+</ul>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

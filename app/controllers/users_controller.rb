@@ -22,12 +22,6 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # GET /users/1/edit
-  def edit
-    @user = User.find(params[:id])
-      redirect_to "/users/#{session[:user_id]}/edit"
-  end
-
   # POST /users
   # POST /users.json
   def create
@@ -45,12 +39,19 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/edit
+  def edit
+    @user = current_user
+      #redirect_to "/users/#{session[:user_id]}/edit"
+  end
+
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    @user = User.find(params[:id])
+    @user = current_user
       respond_to do |format|
       if @user.update(user_params)
+          @user.save
           format.html { redirect_to @user, notice: 'Your account was successfully updated.' }
           format.json { render :show, status: :ok, location: @user }
         else

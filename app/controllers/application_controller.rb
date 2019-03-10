@@ -11,8 +11,10 @@ class ApplicationController < ActionController::Base
   end
 
   def admin
-    if current_user.email ==  "akedalat@gmail.com"
-      return true
+    if !current_user.nil?
+      if current_user.email ==  "akedalat@gmail.com"
+        return true
+      end
     else
       return false
     end
